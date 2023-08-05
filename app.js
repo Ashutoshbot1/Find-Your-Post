@@ -97,7 +97,7 @@ async function getPostsInfo(data){
     const response= await fetch(url);
     const postData=await response.json();
 
-    console.log(postData);
+    // console.log(postData);
 
     displayPosts(postData);
 
@@ -112,7 +112,7 @@ function displayPosts(data){
 
 
     const postsArray=data[0].PostOffice;
-    console.log(postsArray);
+    // console.log(postsArray);
 
     const postContainer=document.querySelector(".post-office-container");
 
@@ -139,6 +139,70 @@ function displayPosts(data){
 
     
 }
+
+
+
+document.getElementById("search").addEventListener("click",
+
+async ()=>{
+        const searchPost=document.querySelector("#input").value;
+
+        const url=`http://ip-api.com/json/${ipDisplay.innerHTML}`
+
+        const response=await fetch(url);
+        const data=await response.json();
+
+        const url2=`https://api.postalpincode.in/pincode/${data.zip}`;
+    
+        const response2= await fetch(url2);
+        const postData=await response2.json();
+
+        // console.log(postData);
+        const postsArray=postData[0].PostOffice;
+        console.log(postsArray);
+
+        const postContainer=document.querySelector(".post-office-container");
+
+        postContainer.innerHTML="";
+
+        postsArray.forEach(
+            (pos)=>{
+                if(pos.Name===searchPost){
+                    console.log("inside");
+                    const post=document.createElement("div");
+            
+                    post.id="post-office-details";
+
+                    post.innerHTML=`
+
+                        <p id="name">${pos.Name}</p>
+                        <p id="branch-type">${pos.BranchType}</p>
+                        <p id="delivery-status">${pos.DeliveryStatus}</p>
+                        <p id="district">${pos.District}</p>
+                        <p id="division">${pos.Division}</p>
+
+                    `;
+
+                    postContainer.appendChild(post);
+                }
+            }
+
+        )
+
+        if(!postContainer.firstChild){
+            postContainer.innerHTML="<p class='para'>0 Results Found : wait for 3sec to search again</p>";
+
+            setTimeout(()=>{
+                postContainer.innerHTML="";
+
+                getPost(data);
+            },3000)
+        }
+
+
+        
+    }
+)
 
 
 

@@ -232,7 +232,7 @@ body{
     display: flex;
     align-items: center;
     gap:1rem;
-    border-radius: .5rem;
+    border-radius: 1rem;
 
 }
 
@@ -270,4 +270,44 @@ body{
     font-size: 2.4rem;
     font-weight: 500;
     text-transform: capitalize;
+}
+
+/* --------input     ------------- */
+
+.input-wrapper{
+    /* border: 2px solid; */
+    display: flex;
+    align-items: center;
+}
+
+#search{
+    background: #575A85;
+    font-size: 2.5rem;
+    color: #B8BCCC;
+    /* border: 2px solid; */
+    border: 0;
+    outline: 0;
+    outline: 0;
+    padding: 1.5rem 5rem;
+    border-radius: 1rem;
+    transition: all .3s;
+    align-self: end;
+    margin-left: 5rem;
+    margin-right: 5rem;
+    margin-top: -25px;
+}
+
+#search:hover{
+    background: transparent;
+    border: 2px solid #B8BCCC;
+    
+}
+
+.post-office-container p.para{
+    text-align: center;
+    margin: 3rem;
+    font-size: 2.4rem;
+    font-weight: 700;
+
+    color: red;
 }
