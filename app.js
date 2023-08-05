@@ -14,11 +14,15 @@ async function getIpAddress(){
         return;
     }
     const data=await response.json();
-    console.log(data.ip);
+    // console.log(data.ip);
 
     ipDisplay.innerHTML=data.ip;
 
 }
+
+
+
+
 
 
 
@@ -37,7 +41,7 @@ async function getPost(){
     const apiKey=`5c6378501066d983eed5ccf17c7599c150d50467`;
 
 
-    const url=`http://ip-api.com/json/${ipDisplay.innerHTML}`
+    const url=`https://ipinfo.io/${ipDisplay.innerHTML}?token=30dd7efacbc702`
 
     const response=await fetch(url);
     const data=await response.json();
@@ -49,6 +53,10 @@ async function getPost(){
     displayMoreInfo(data);
     getPostsInfo(data);
 
+    latitude=data.loc.split(",")[0];
+    longitude=data.loc.split(",")[1];
+    // console.log(latitude);
+    // console.log(longitude);
 
 }
 
@@ -59,15 +67,17 @@ function displayMap(data){
 
     const frame=document.getElementById("g-map");
     // https://maps.google.com/maps?q=35.856737, 10.606619&z=15&output=embed
-    frame.src=`https://maps.google.com/maps?q=${data.lat}, ${data.lon}&z=15&output=embed`
+    frame.src=`https://maps.google.com/maps?q=${data.loc.split(",")[0]}, ${data.loc.split(",")[1]}&z=15&output=embed`
+    // console.log(latitude);
+    // console.log(longitude);
 }
 
 
 // ------- displayy geo details --------
 
 function displayGeoDetails(data){
-    document.querySelector("#lat span").innerHTML=data.lat;
-    document.querySelector("#long span").innerHTML=data.lon;
+    document.querySelector("#lat span").innerHTML=data.loc.split(",")[0];;
+    document.querySelector("#long span").innerHTML=data.loc.split(",")[1];
     document.querySelector("#city span").innerHTML=data.city;
     document.querySelector("#oragnisation span").innerHTML=data.org;
     document.querySelector("#region span").innerHTML=data.region;
@@ -79,12 +89,12 @@ function displayGeoDetails(data){
 
 function displayMoreInfo(data){
 
-    let timeZone=new Date().toLocaleString("en-US", { timeZone: `${data.timezone}` });
+    let timeZone=new Date().toLocaleString("en-US", { timeZone: `${data.timezone}`});
     // console.log(timeZone);
 
     document.querySelector("#time-Zone span").innerHTML=data.timezone;
     document.querySelector("#date-time span").innerHTML=timeZone;
-    document.querySelector("#pincode span").innerHTML=data.zip;
+    document.querySelector("#pincode span").innerHTML=data.postal;
     // document.querySelector("#message .sp").innerHTML="1";
 }
 
@@ -92,7 +102,7 @@ function displayMoreInfo(data){
 // --------- get posts -----------
 
 async function getPostsInfo(data){
-    url=`https://api.postalpincode.in/pincode/${data.zip}`;
+    url=`https://api.postalpincode.in/pincode/${data.postal}`;
     
     const response= await fetch(url);
     const postData=await response.json();
@@ -141,25 +151,28 @@ function displayPosts(data){
 }
 
 
+// ----------------- search --------------------------------------------
+
+
 
 document.getElementById("search").addEventListener("click",
 
 async ()=>{
         const searchPost=document.querySelector("#input").value;
 
-        const url=`http://ip-api.com/json/${ipDisplay.innerHTML}`
+        const url=`https://ipinfo.io/${ipDisplay.innerHTML}?token=30dd7efacbc702`
 
         const response=await fetch(url);
         const data=await response.json();
 
-        const url2=`https://api.postalpincode.in/pincode/${data.zip}`;
+        const url2=`https://api.postalpincode.in/pincode/${data.postal}`;
     
         const response2= await fetch(url2);
         const postData=await response2.json();
 
-        // console.log(postData);
+        console.log(postData);
         const postsArray=postData[0].PostOffice;
-        console.log(postsArray);
+        // console.log(postsArray);
 
         const postContainer=document.querySelector(".post-office-container");
 
